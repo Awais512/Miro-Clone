@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 import Image from "next/image";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
+import { Hint } from "@/components/hint";
 
 interface ItemsProps {
   id: string;
@@ -24,16 +25,18 @@ export const Item = ({ id, name, imageUrl }: ItemsProps) => {
 
   return (
     <div className="aspect-square relative">
-      <Image
-        src={imageUrl}
-        alt={name}
-        onClick={onClick}
-        fill
-        className={cn(
-          "rounded-md cursor-pointer opacity-75 hover:opacity-100",
-          isActive && "opacity-100"
-        )}
-      />
+      <Hint label={name} side="right" align="start" sideOffset={18}>
+        <Image
+          src={imageUrl}
+          alt={name}
+          onClick={onClick}
+          fill
+          className={cn(
+            "rounded-md cursor-pointer opacity-75 hover:opacity-100",
+            isActive && "opacity-100"
+          )}
+        />
+      </Hint>
     </div>
   );
 };
