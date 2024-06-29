@@ -7,12 +7,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Link2, Trash2 } from "lucide-react";
+import { Link2, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
 import { ConfirmModal } from "./confirm-modal";
 import { Button } from "./ui/button";
+import { useRenameModal } from "@/store/use-rename-modal";
 
 interface Props {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export const Actions = ({ children, side, sideOffset, id, title }: Props) => {
+  const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
 
   const onDelete = () => {
@@ -55,6 +57,13 @@ export const Actions = ({ children, side, sideOffset, id, title }: Props) => {
           <Link2 className="size-4 mr-2" />
           Copy board link
         </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => onOpen(id, title)}
+          className="p-3 cursor-pointer"
+        >
+          <Pencil className="size-4 mr-2" />
+          Rename board
+        </DropdownMenuItem>
         <ConfirmModal
           header="Delete Board?"
           description="This will delete the board and all of its content"
@@ -64,7 +73,6 @@ export const Actions = ({ children, side, sideOffset, id, title }: Props) => {
           <Button
             variant="ghost"
             disabled={pending}
-            // onClick={onDelete}
             className="p-3 cursor-pointer text-sm w-full justify-start font-normal"
           >
             <Trash2 className="size-4 mr-2" />
